@@ -87,9 +87,23 @@ async function run() {
     });
 
     // user related apis
+
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.post("/users", async (req, res) => {
       const data = req.body;
       const result = await userCollection.insertOne(data);
+      res.send(result);
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = userCollection.deleteOne(query);
       res.send(result);
     });
 
